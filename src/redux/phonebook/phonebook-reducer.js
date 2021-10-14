@@ -19,4 +19,4 @@ const phonebookReducer = combineReducers({
   filter,
 });
 
-export { phonebookReducer };
+export { phonebookReducer, filter };

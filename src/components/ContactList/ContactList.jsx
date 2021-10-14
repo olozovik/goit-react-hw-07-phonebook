@@ -2,15 +2,22 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListStyled } from './ContactList.styled';
 import { deleteContact } from 'redux/phonebook/phonebook-actions';
-import { getContacts, getFilter } from 'redux/phonebook/phonebook-selectors';
+import { getFilter } from 'redux/phonebook/phonebook-selectors';
+import { useGetContactsQuery } from '../../redux/phonebook/phonebook-slice';
 
 function ContactList() {
-  const contacts = useSelector(getContacts);
+  const { data } = useGetContactsQuery();
+  console.log(data);
+  const contacts = data ?? [];
   const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
   const [contactsToRender, setContactsToRender] = useState(contacts);
   const [filterResult, setFilterResult] = useState('idle');
+
+  useEffect(() => {
+    setContactsToRender(contacts);
+  }, [contacts]);
 
   useEffect(() => {
     setContactsToRender(
