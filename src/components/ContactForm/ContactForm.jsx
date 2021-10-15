@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
 import { FormStyled } from './ContactForm.styled';
-import { addContact } from 'redux/phonebook/phonebook-actions';
-import { getContacts } from 'redux/phonebook/phonebook-selectors';
+import { phonebookApi } from 'redux/phonebook';
 
 const ContactForm = () => {
-  const contacts = useSelector(getContacts);
-  const dispatch = useDispatch();
+  const { data: contacts = [] } = phonebookApi.useGetContactsQuery();
+  const [addContact] = phonebookApi.useAddContactMutation();
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -16,7 +14,7 @@ const ContactForm = () => {
   useEffect(() => {
     setName('');
     setNumber('');
-  }, [contacts]);
+  }, [contacts.length]);
 
   const nameInputId = uuidv4();
   const numberInputId = uuidv4();
@@ -32,7 +30,7 @@ const ContactForm = () => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     const isContactExisting = contacts.find(
@@ -43,8 +41,9 @@ const ContactForm = () => {
       toast.error(`${name} is already in contacts.`);
       return;
     }
-
-    dispatch(addContact(name, number));
+    console.log(contacts);
+    await addContact({ name, number });
+    console.log(contacts);
   };
 
   return (

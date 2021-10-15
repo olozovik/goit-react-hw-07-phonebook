@@ -1,53 +1,41 @@
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListStyled } from './ContactList.styled';
-import { deleteContact } from 'redux/phonebook/phonebook-actions';
-import { getFilter } from 'redux/phonebook/phonebook-selectors';
-import { useGetContactsQuery } from '../../redux/phonebook/phonebook-slice';
+import { phonebookApi, phonebookSelectors } from 'redux/phonebook';
 
 function ContactList() {
-  const { data } = useGetContactsQuery();
-  console.log(data);
-  const contacts = data ?? [];
-  const filter = useSelector(getFilter);
+  const { data: contacts = [] } = phonebookApi.useGetContactsQuery();
+  const [deleteContact] = phonebookApi.useDeleteContactMutation();
+
+  const filter = useSelector(phonebookSelectors.getFilter);
   const dispatch = useDispatch();
 
-  const [contactsToRender, setContactsToRender] = useState(contacts);
-  const [filterResult, setFilterResult] = useState('idle');
+  const filteredContacts = contacts.filter(({ name }) =>
+    name.toLowerCase().includes(filter.toLowerCase()),
+  );
 
-  useEffect(() => {
-    setContactsToRender(contacts);
-  }, [contacts]);
-
-  useEffect(() => {
-    setContactsToRender(
-      contacts.filter(({ name }) =>
-        name.toLowerCase().includes(filter.toLowerCase()),
-      ),
-    );
-  }, [contacts, filter]);
-
-  useEffect(() => {
-    if (!filter && contacts.length) setFilterResult('idle');
-    if (!filter && !contacts.length) setFilterResult('no contacts');
-    if (filter && !contactsToRender.length) setFilterResult('not found');
-  }, [contacts.length, contactsToRender.length, filter]);
+  // useEffect(() => {
+  //   if (!filter && contacts.length) setFilterResultStatus('idle');
+  //   if (!filter && !contacts.length) setFilterResultStatus('no contacts');
+  //   if (filter && !filteredContacts.length) setFilterResultStatus('not found');
+  // }, [contacts.length, filteredContacts.length, filter]);
 
   return (
     <>
-      {filterResult === 'no contacts' && <p>There are no contacts here yet.</p>}
-      {filterResult === 'not found' && (
-        <p>There are no contacts with this name.</p>
-      )}
+      {/*{filterResultStatus === 'no contacts' && (*/}
+      {/*  <p>There are no contacts here yet.</p>*/}
+      {/*)}*/}
+      {/*{filterResultStatus === 'not found' && (*/}
+      {/*  <p>There are no contacts with this name.</p>*/}
+      {/*)}*/}
       <ListStyled>
-        {contactsToRender?.map(({ name, number }) => {
+        {filteredContacts?.map(({ id, name, number }) => {
           return (
-            <li key={name}>
+            <li key={id}>
               {name}: {number}
               <button
                 type={'button'}
                 data-name={name}
-                onClick={() => dispatch(deleteContact(name))}
+                onClick={() => deleteContact(id)}
               >
                 Delete
               </button>

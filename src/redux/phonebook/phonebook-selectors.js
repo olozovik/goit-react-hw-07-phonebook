@@ -1,4 +1,4 @@
-const getContacts = state => state.items;
-const getFilter = state => state.filter;
+const getContacts = state => state.contacts;
+const getFilter = state => state.phonebookReducer.filter;
 
 export { getContacts, getFilter };

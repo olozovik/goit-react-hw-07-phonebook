@@ -5,8 +5,8 @@ const FormStyled = styled.form`
   flex-direction: column;
   width: 400px;
   margin-bottom: 30px;
-  padding: 10px 15px;
-  border: 1px solid #000;
+  //padding: 10px 15px;
+  //border: 1px solid #000;
   & label {
     display: grid;
     grid-template-columns: 1fr;
