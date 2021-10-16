@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { LabelStyled } from './Filter.styled';
 import { phonebookReducer, phonebookSelectors } from 'redux/phonebook';
+import { Input } from 'components/_share/Input/Input';
 
 function Filter() {
   const filterValue = useSelector(phonebookSelectors.getFilter);
@@ -10,8 +11,8 @@ function Filter() {
 
   return (
     <LabelStyled htmlFor="inputId">
-      Find contacts by name
-      <input
+      <span>Find contacts by name:</span>
+      <Input
         id={inputId}
         type="text"
         value={filterValue}

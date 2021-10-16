@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { Container } from './Wrapper.styled';
+import { WrapperStyled } from './Wrapper.styled';
 
 function Wrapper({ children }) {
-  return <Container>{children}</Container>;
+  return <WrapperStyled>{children}</WrapperStyled>;
 }
 
 Wrapper.propTypes = {

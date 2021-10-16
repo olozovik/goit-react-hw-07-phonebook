@@ -1,52 +1,56 @@
 import styled from '@emotion/styled';
 
 const FormStyled = styled.form`
+  margin-bottom: 50px;
   display: flex;
-  flex-direction: column;
-  width: 400px;
-  margin-bottom: 30px;
-  //padding: 10px 15px;
-  //border: 1px solid #000;
+  align-items: flex-end;
+
+  & button {
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+const LabelsWrapper = styled.div`
+  display: flex;
+
   & label {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 5px;
-    margin-bottom: 15px;
+    font-weight: 700;
+    margin-right: 25px;
 
-    & input {
-      width: 175px;
-      border: 1px solid grey;
-      border-radius: 2px;
-      outline: none;
-      transition: box-shaddow 200ms linear;
+    & span {
+      margin-right: 10px;
+      font-size: 14px;
+    }
+  }
 
-      &:focus {
-        box-shadow: 0 0 2px 2px #87baf4;
-        border: 1px solid #87baf4;
+  @media (max-width: 850px) {
+    & label {
+      display: flex;
+      flex-direction: column;
+
+      & span {
+        margin-bottom: 4px;
       }
     }
   }
 
-  & button {
-    margin-top: 10px;
-    width: max-content;
-    padding: 2px 15px;
-    font-weight: 700;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    background-color: transparent;
-    cursor: pointer;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    margin-bottom: 15px;
 
-    &:hover,
-    &:focus {
-      background-image: linear-gradient(
-        to top,
-        rgba(67, 109, 216, 1) 50%,
-        rgba(94, 152, 247, 1) 100%
-      );
-      border-color: transparent;
+    & label:not(:last-child) {
+      margin-bottom: 10px;
     }
   }
 `;
 
-export { FormStyled };
+export { FormStyled, LabelsWrapper };
