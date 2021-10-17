@@ -1,22 +1,24 @@
-import { useSelector } from 'react-redux';
-import { FirstColumn, SecondColumn, TableStyled } from './ContactList.styled';
-import { phonebookApi, phonebookSelectors } from 'redux/phonebook';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
+import { phonebookApi, phonebookSelectors } from 'redux/phonebook';
 import { ButtonDelete } from '../ButtonDelete/ButtonDelete';
+import {
+  FirstColumn,
+  LoadMoreButton,
+  SecondColumn,
+  TableStyled,
+} from './ContactList.styled';
 
 function ContactList() {
   const perPageContacts = 10;
 
-  const { data: contacts = [] } = phonebookApi.useGetContactsQuery();
-  const [deleteContact] = phonebookApi.useDeleteContactMutation();
+  const { data: contacts = [], error } = phonebookApi.useGetContactsQuery();
+
   const filter = useSelector(phonebookSelectors.getFilter);
 
   const [filterResultStatus, setFilterResultStatus] = useState('idle');
   const [page, setPage] = useState(1);
-
-  const handleDeleteButton = id => {
-    deleteContact(id);
-  };
 
   const handleLoadMoreButton = () => setPage(p => p + 1);
 
@@ -25,12 +27,19 @@ function ContactList() {
   );
 
   useEffect(() => {
+    if (error) {
+      toast.error(error.status);
+    }
+  }, [error]);
+
+  useEffect(() => {
     if (!filter && contacts.length) setFilterResultStatus('idle');
     if (!filter && !contacts.length) setFilterResultStatus('no contacts');
     if (filter && !filteredContacts.length) setFilterResultStatus('not found');
   }, [contacts.length, filteredContacts.length, filter]);
 
   const numberContactsToShow = perPageContacts * page;
+  const isLoadMore = numberContactsToShow < filteredContacts.length;
 
   return (
     <>
@@ -51,21 +60,18 @@ function ContactList() {
                   <FirstColumn>{name}</FirstColumn>
                   <SecondColumn>{number}</SecondColumn>
                   <td>
-                    <ButtonDelete
-                      type={'button'}
-                      data-name={name}
-                      onClick={handleDeleteButton}
-                      id={id}
-                    />
+                    <ButtonDelete id={id} />
                   </td>
                 </tr>
               );
             })}
         </tbody>
       </TableStyled>
-      <button type="button" onClick={handleLoadMoreButton}>
-        Show more contacts
-      </button>
+      {isLoadMore && (
+        <LoadMoreButton type="button" onClick={handleLoadMoreButton}>
+          Show more contacts...
+        </LoadMoreButton>
+      )}
     </>
   );
 }

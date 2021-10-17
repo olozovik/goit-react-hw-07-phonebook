@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { LabelStyled } from './Filter.styled';
 import { phonebookReducer, phonebookSelectors } from 'redux/phonebook';
 import { Input } from 'components/_share/Input/Input';
+import { LabelStyled } from './Filter.styled';
 
 function Filter() {
   const filterValue = useSelector(phonebookSelectors.getFilter);

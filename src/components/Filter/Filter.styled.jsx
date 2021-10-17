@@ -1,14 +1,17 @@
 import styled from '@emotion/styled';
 
-const LabelStyled = styled.label`
+export const LabelStyled = styled.label`
   display: block;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   & span {
     margin-right: 10px;
     font-size: 14px;
     font-weight: 700;
+
+    @media (max-width: 700px) {
+      display: block;
+      margin-bottom: 10px;
+    }
   }
 `;
-
-export { LabelStyled };

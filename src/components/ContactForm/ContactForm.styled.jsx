@@ -1,16 +1,28 @@
 import styled from '@emotion/styled';
 
-const FormStyled = styled.form`
-  margin-bottom: 50px;
+export const FormStyled = styled.form`
   display: flex;
   align-items: flex-end;
+  margin-bottom: 40px;
 
   & button {
     flex-shrink: 0;
-    font-weight: 700;
+    padding: 6px 10px;
+
     font-size: 14px;
-    padding: 5px 10px;
+    font-weight: 600;
+
+    border: none;
+    border-radius: 3px;
     cursor: pointer;
+    box-shadow: 0 0 0 transparent inset, 0 0 2px 1px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 150ms linear, color 150ms linear;
+
+    &:hover,
+    &:active {
+      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset, 0 0 0 transparent;
+      color: ${({ theme }) => theme.buttonActiveHover};
+    }
   }
 
   @media (max-width: 700px) {
@@ -19,12 +31,12 @@ const FormStyled = styled.form`
   }
 `;
 
-const LabelsWrapper = styled.div`
+export const LabelsWrapper = styled.div`
   display: flex;
 
   & label {
-    font-weight: 700;
     margin-right: 25px;
+    font-weight: 700;
 
     & span {
       margin-right: 10px;
@@ -52,5 +64,3 @@ const LabelsWrapper = styled.div`
     }
   }
 `;
-
-export { FormStyled, LabelsWrapper };

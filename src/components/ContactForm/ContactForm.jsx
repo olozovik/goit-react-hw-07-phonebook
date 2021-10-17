@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
-import { FormStyled, LabelsWrapper } from './ContactForm.styled';
 import { phonebookApi } from 'redux/phonebook';
 import { Input } from 'components/_share/Input/Input';
+import { FormStyled, LabelsWrapper } from './ContactForm.styled';
 
 const ContactForm = () => {
   const { data: contacts = [] } = phonebookApi.useGetContactsQuery();
-  const [addContact] = phonebookApi.useAddContactMutation();
+  const [addContact, { error }] = phonebookApi.useAddContactMutation();
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -45,6 +45,10 @@ const ContactForm = () => {
 
     await addContact({ name, number });
     toast.success(`Contact added`);
+
+    if (error) {
+      toast.error(error);
+    }
   };
 
   return (
